@@ -186,7 +186,9 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h1 id="introduction">Introduction</h1>
+  <div class="alert alert-info" role="alert"><i class="fa fa-info-circle"></i> <b>Note:</b> Video guide is also available, checkout <a href="https://www.youtube.com/watch?v=Zj97ey18ib4">https://www.youtube.com/watch?v=Zj97ey18ib4</a></div>
+
+<h1 id="introduction">Introduction</h1>
 <p>The app is connected with Woocommerce (WordPress) using REST APIs, the following documentation will guide you through the process to connect the app with your Woocommerce Store.</p>
 
 <h1 id="setting-up-your-wordpress">Setting up your wordpress</h1>
@@ -217,14 +219,9 @@ $('#toc').on('click', 'a', function() {
 <strong>CONSUMER KEY</strong> and <strong>CONSUMER SECRET</strong>.
 Go to <code class="highlighter-rouge">WooCommerce</code> &gt; <code class="highlighter-rouge">Settings</code> &gt; <code class="highlighter-rouge">Advanced</code> &gt; <code class="highlighter-rouge">REST API</code> &gt; <code class="highlighter-rouge">ADD Key</code>. Copy both <strong>CONSUMER KEY</strong> and <strong>CONSUMER SECRET</strong>,
 these values will be required when we setup mobile application further in this document. You are not required to follow this step if your website uses <strong>http</strong> protocol.</li>
-      <li>Setup Pretty permalinks in Settings &gt; Permalinks so that the custom endpoints are supported. Default permalinks will not work.</li>
-    </ul>
-    <h1 align="center"> Step 1</h1>
-    <p align="center"><img src="images/3.1-rest-api-permalink-menu-highlight.png" /></p>
-    <h1 align="center"> Step 2</h1>
-    <p align="center"><img src="images/3.2-rest-api-permalink-highlight.png" /></p>
-
-    <ul>
+      <li>
+        <p>Setup Pretty permalinks in Settings &gt; Permalinks so that the custom endpoints are supported. Default permalinks will not work.</p>
+      </li>
       <li>You also need to ensure that you web serve(Apache/Nginx) supports <code class="highlighter-rouge">HTTP Authorization Header</code>. If you are using shared hosting and it has 
 disabled the HTTP Authorization Header, then you need to enable it.
 To enable Authorization Header, please follow the following steps
@@ -241,8 +238,6 @@ To enable Authorization Header, please follow the following steps
  RewriteCond %{HTTP:Authorization} ^(.*)
  RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 </code></pre></div>            </div>
-            <p><img src="images/4.7-htaccess-original.png" alt="image-4-7" />
- <img src="images/4.8-htaccess-authorization-enabled.png" alt="image-4-8" /></p>
           </li>
         </ul>
       </li>
@@ -273,10 +268,6 @@ Follow the following link to install and setup this plugin:</p>
 
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  https://wordpress.org/plugins/woocommerce-payu-paisa/
 </code></pre></div>        </div>
-
-        <p><img src="images/6.1-search-payumoney-plugin.png" alt="image-4-9" />
- <img src="images/6.2-highlight-payumoney-plugin.png" alt="image-4-10" />
- <img src="images/6.6-payumoney-plugin-activate.png" alt="image-4-11" /></p>
       </li>
     </ul>
   </li>
@@ -360,11 +351,222 @@ To ensure that you have correct version of nodejs installed, from the command li
     <p>Please make sure that you understand that you need to enter values for <strong>consumerKey</strong> and <strong>consumerSecret</strong> if your website uses <strong>https</strong>. And if your website uses <strong>http</strong>, you need to enter values for <strong>adminUsername</strong> and <strong>adminPassword</strong>.</p>
   </li>
   <li>
+    <h3 id="social-login-and-phone-authentication">Social Login and Phone Authentication</h3>
+    <p><strong>*Note: This section is bit advance and novice users/developers may find it bit difficult to follow it. We have tried to make it as user/developer friedly as we can do. If you still face any issue you can contact us for support <a href="https://opuslabs.freshdesk.com/">here</a> or if you find it hard to implement, please purchase our installation service and we will do the complete setup for you.</strong></p>
+
+    <p><strong>*Note: Phone Authentication or some other functionality will not work on web and simulator. Kindly use real physical device for testing.</strong></p>
+
+    <p>Before continuing make sure you have :-</p>
+    <ul>
+      <li><strong>Firebase Account</strong> <a href="https://console.firebase.google.com">https://console.firebase.google.com</a></li>
+      <li><strong>Facebook App</strong> <a href="https://developers.facebook.com/apps">https://developers.facebook.com/apps</a></li>
+      <li><strong>SHA-1 fingerprint for the app</strong> <a href="https://cloud.google.com/solutions/mobile/mobile-firebase-app-engine-flexible#generating_a_sha-1_fingerprint_for_the_app">https://cloud.google.com/solutions/mobile/mobile-firebase-app-engine-flexible#generating_a_sha-1_fingerprint_for_the_app</a></li>
+    </ul>
+
+    <p>After following the steps given below make sure you have values of all the following keys with you:</p>
+    <ul>
+      <li><strong>webApplicationId</strong>: Dummy value =&gt; 511052243603-tti40jbrr3ukb2t3abebcesl5sd0ql099.apps.googleusercontent.com</li>
+      <li><strong>apiKey</strong>: Dummy value =&gt; AIzaSyBg3aFpqNbi0kp3maA5SnCXeWXXF_PGEXuI</li>
+      <li><strong>authDomain</strong>: Dummy value =&gt; mobimall-f924zgs.firebaseapp.com</li>
+      <li><strong>databaseURL</strong>: Dummy value =&gt; https://mobimall-f924zgs.firebaseio.com</li>
+      <li><strong>projectId</strong>: Dummy value =&gt; mobimall-f924zgs</li>
+      <li><strong>storageBucket</strong>: Dummy value =&gt; mobimall-f924zgs.appspot.com</li>
+      <li><strong>messagingSenderId</strong>: Dummy value =&gt; 334672535551</li>
+      <li><strong>FACEBOOK APP ID</strong></li>
+      <li><strong>FACEBOOK APP SECRET</strong></li>
+    </ul>
+
+    <p>(Do not use given <strong>Dummy values</strong> in your project, they will not work. They are just for illustration purpose.)</p>
+
+    <p><strong><code class="highlighter-rouge">Firebase Setup</code></strong></p>
+    <ul>
+      <li>
+        <p>Create a Firebase account or log into an existing account.</p>
+      </li>
+      <li>
+        <p>Click <strong>Add project</strong>. Follow the remaining setup steps and click <strong>Create project</strong>.</p>
+      </li>
+    </ul>
+    <p align="center"><img src="images/8.1-firebase-create-project.png" /></p>
+
+    <ul>
+      <li>
+        <p>After the wizard provisions your project, click Continue.</p>
+      </li>
+      <li>
+        <p>In the Overview page of your project, click the Settings gear and then click Project settings.</p>
+      </li>
+      <li>
+        <p>Click Add Firebase to your Android app and follow the wizard</p>
+      </li>
+    </ul>
+    <p align="center"><img src="images/8.3-firebase-add-android-app.png" /></p>
+
+    <ul>
+      <li>
+        <p>In Debug signing certificate SHA-1, enter the SHA-1 value you generated in the previous section.</p>
+      </li>
+      <li>
+        <p>Click Register app.</p>
+      </li>
+      <li>
+        <p>Download the google-services.json file and place it in root directory of app code.</p>
+      </li>
+    </ul>
+    <p align="center"><img src="images/8.4-firebase-download-config-json.png" /></p>
+
+    <ul>
+      <li>
+        <p>Click Next in the Download config file section and follow the rest of the steps if required.</p>
+      </li>
+      <li>
+        <p>In the same section click on <strong>Add App</strong> but choose <strong>Add Firebase to your web app</strong> section this time</p>
+      </li>
+      <li>
+        <p>Copy all the highlated values and paste in <strong>app.config.ts</strong> as a value of respective key</p>
+      </li>
+    </ul>
+    <p align="center"><img src="images/8.7-firebase-web-config.png" /></p>
+
+    <ul>
+      <li>Your <strong>app.config.ts</strong> will look as follows</li>
+    </ul>
+    <p align="center"><img src="images/8.8-firebase-web-config-source-code.png" /></p>
+
+    <ul>
+      <li>Next click on <strong>Authentication</strong> and click on <strong>Sign-in method</strong></li>
+    </ul>
+    <p align="center"><img src="images/8.5-firebase-sign-in-method.png" /></p>
+
+    <ul>
+      <li>
+        <p>Enable <strong>Phone Authentication</strong> and <strong>Google</strong></p>
+      </li>
+      <li>
+        <p>When you will enable <strong>Google</strong> you will see <strong>Web SDK configuration</strong> section, click to expand it</p>
+      </li>
+    </ul>
+    <p align="center"><img src="images/8.6-firebase-google-web-configuration.png" /></p>
+
+    <ul>
+      <li>Copy the value of <strong>Web client ID</strong>, this is the value you will need to paste in <strong>webApplicationId</strong> in <strong>app.config.ts</strong> in app source code</li>
+    </ul>
+
+    <p><strong><code class="highlighter-rouge">Facebook Setup</code></strong></p>
+    <ul>
+      <li>Create an app at <a href="https://developers.facebook.com/apps">https://developers.facebook.com/apps</a></li>
+    </ul>
+    <p align="center"><img src="https://ionicframework.com/img/docs/native/Facebook/1.png" /></p>
+    <ul>
+      <li>Retrieve the <strong>App ID</strong> and <strong>App Name</strong>.</li>
+    </ul>
+    <p align="center"><img src="https://ionicframework.com/img/docs/native/Facebook/2.png" /></p>
+    <ul>
+      <li>
+        <p>Then type in the following command in your Terminal, where <code class="highlighter-rouge">APP_ID</code> and <code class="highlighter-rouge">APP_NAME</code> are the values from the Facebook Developer portal.</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="123456789" --variable APP_NAME="myApplication"
+</code></pre></div>        </div>
+      </li>
+      <li>In config.xml, replace the <strong>YOUR_FACEBOOK_APP_ID</strong> with your <strong>Facebook APP ID</strong> and <strong>YOUR_FACEBOOK_APP_NAME</strong> with your <strong>Facebook App Name</strong> in following code:
+        <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;config-file</span> <span class="na">parent=</span><span class="s">"/resources"</span> <span class="na">target=</span><span class="s">"./res/values/strings.xml"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"fb_app_id"</span><span class="nt">&gt;</span>YOUR_FACEBOOK_APP_ID<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"fb_app_name"</span><span class="nt">&gt;</span>YOUR_FACEBOOK_APP_NAME<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/config-file&gt;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>If you are building for Android, please follow this two steps also to complete the Facebook integration:
+        <ul>
+          <li><a href="https://developers.facebook.com/docs/facebook-login/android#5--associate-your-package-name-and-default-class-with-your-app">https://developers.facebook.com/docs/facebook-login/android#5–associate-your-package-name-and-default-class-with-your-app</a></li>
+          <li><a href="https://developers.facebook.com/docs/facebook-login/android#6--provide-the-development-and-release-key-hashes-for-your-app">https://developers.facebook.com/docs/facebook-login/android#6–provide-the-development-and-release-key-hashes-for-your-app</a></li>
+        </ul>
+
+        <p>In summary, you will need to add <strong>Android</strong> platform to your Facebook App and enter the debug and release keys. Some users may face some difficulty in retreiving debug and release key, kindly go through the second link thoroughly.</p>
+      </li>
+    </ul>
+
+    <p><strong><code class="highlighter-rouge">cordova-plugin-googleplus</code></strong></p>
+    <ul>
+      <li>
+        <p>Run the following command to add the support for google login</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ionic cordova plugin add cordova-plugin-googleplus --save --variable WEB_APPLICATION_CLIENT_ID=mywebapplicationclientid
+</code></pre></div>        </div>
+
+        <p>Your <strong>mywebapplicationclientid</strong> will look something like this <strong>511052243603-tti40jbrr3ukb2t3abebcesl5sd0ql099.apps.googleusercontent.com</strong>. We have already demonstrated above how to get this id.</p>
+      </li>
+    </ul>
+
+    <p><strong><code class="highlighter-rouge">Final Checklist</code></strong></p>
+
+    <p>In summary, make sure you have followed all these steps before proceeding</p>
+    <ul>
+      <li>Added project in firebase</li>
+      <li>Added debug and release <strong>SHA-1 key</strong> in firebase</li>
+      <li>Downloaded <strong>google-services.json</strong> file from firebase and placed it in root folder of the app source code</li>
+      <li>Enabled <strong>Phone Authentication</strong> and <strong>Google</strong> in signin method in firebase</li>
+      <li>Updated all the required values in <strong>app.config.ts</strong></li>
+      <li>Created Facebook app</li>
+      <li>Added required platforms(Android/iOS) in your Facebook app and debug and releash SHA1 keys</li>
+      <li>
+        <p>Installed <code class="highlighter-rouge">cordova-plugin-googleplus</code> and <code class="highlighter-rouge">cordova-plugin-facebook4</code> cordova plugins</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ionic cordova plugin add cordova-plugin-googleplus --save --variable WEB_APPLICATION_CLIENT_ID=mywebapplicationclientid
+
+ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="123456789" --variable APP_NAME="myApplication"
+</code></pre></div>        </div>
+      </li>
+    </ul>
+
+    <p><strong><code class="highlighter-rouge">Useful links</code></strong></p>
+    <ul>
+      <li>SHA-1 key related
+        <ul>
+          <li><a href="https://cloud.google.com/solutions/mobile/mobile-firebase-app-engine-flexible#generating_a_sha-1_fingerprint_for_the_app">https://cloud.google.com/solutions/mobile/mobile-firebase-app-engine-flexible#generating_a_sha-1_fingerprint_for_the_app</a></li>
+          <li><a href="https://developers.google.com/android/guides/client-auth">https://developers.google.com/android/guides/client-auth</a></li>
+          <li><a href="https://medium.com/pen-bold-kiln-press/sha-1-android-studio-ec02fb893e72">https://medium.com/pen-bold-kiln-press/sha-1-android-studio-ec02fb893e72</a></li>
+        </ul>
+      </li>
+      <li>Google login
+        <ul>
+          <li><a href="https://ionicframework.com/docs/native/google-plus/">https://ionicframework.com/docs/native/google-plus/</a></li>
+        </ul>
+      </li>
+      <li>Facebook login
+        <ul>
+          <li><a href="https://ionicframework.com/docs/native/facebook/">https://ionicframework.com/docs/native/facebook/</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h3 id="push-notifications">Push Notifications</h3>
+    <p>Your can configure our mobile app to recieve the push notifications when order’s status is updated from backend. Push notfications are integrated through <a href="https://onesignal.com/">One Signal</a>. You will need an account of OneSignal before proceeding. Please follow the following steps:</p>
+    <ul>
+      <li>Create an account on <a href="https://onesignal.com/">OneSignal</a> if you do not already have one.</li>
+      <li>Create a new app in OneSignal</li>
+      <li>Grab your OneSignal App ID, available in <a href="https://documentation.onesignal.com/docs/accounts-and-keys#section-app-id">Keys &amp; IDs</a></li>
+      <li>Install <a href="https://wordpress.org/plugins/onesignal-free-web-push-notifications/">OneSingal Wordrepss Plugin</a> on your wordpress site</li>
+      <li>Setup the wordpress plugin you just installed in previous step. This guide may help you <a href="https://documentation.onesignal.com/docs/accounts-and-keys#section-app-id">https://documentation.onesignal.com/docs/accounts-and-keys#section-app-id</a></li>
+      <li>In <code class="highlighter-rouge">src/app/app.config.ts</code> set the following values:
+        <ul>
+          <li>oneSignalAppId: Your OneSignal App ID or just App ID, is the main identifier of your OneSignal app. Follow this instruction to retreive it <a href="https://documentation.onesignal.com/docs/accounts-and-keys#section-keys-ids">https://documentation.onesignal.com/docs/accounts-and-keys#section-keys-ids</a></li>
+          <li>oneSignalGPSenderId: A unique numerical value created when you create your Firebase project, available in the <a href="https://console.firebase.google.com/project/_/settings/cloudmessaging/">Cloud Messaging</a> tab of the Firebase console Settings pane. The sender ID is used to identify each sender that can send messages to the client app.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><strong><code class="highlighter-rouge">Useful links</code></strong></p>
+    <ul>
+      <li>Instructions on how to setup OneSignal for Ionic <a href="https://documentation.onesignal.com/docs/ionic-sdk-setup">https://documentation.onesignal.com/docs/ionic-sdk-setup</a></li>
+    </ul>
+  </li>
+  <li>
     <h3 id="other-installations">Other Installations</h3>
     <p>Ionic doesn’t bundle all of the tooling required to build an app, it relies on some additional SDKs and software provided by Apple and/or Google. It is good to read and follow the platform guides provided by Ionic to set up for each platorm you wish to work with
- <a href="https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html">Android Platform Guide</a>
- <a href="https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html">iOS Platform Guide</a>
- You can do this at a later time, but you’ll need to set up the platform tooling before you can preview or emulate an application on a simulator or device.</p>
+<a href="https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html">Android Platform Guide</a>
+<a href="https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html">iOS Platform Guide</a>
+You can do this at a later time, but you’ll need to set up the platform tooling before you can preview or emulate an application on a simulator or device.</p>
   </li>
   <li>
     <h3 id="payumoney">PayUMoney:</h3>
@@ -392,7 +594,6 @@ Kindly refer to this <a href="https://ionicframework.com/docs/intro/deploying/">
 Please raise an issue ticket at this link <a href="https://opuslabs.freshdesk.com">https://opuslabs.freshdesk.com</a></strong></p>
 
 
-
     <div class="tags">
         
     </div>
@@ -408,7 +609,7 @@ Please raise an issue ticket at this link <a href="https://opuslabs.freshdesk.co
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 Opus Labs. All rights reserved. <br />
- Site last generated: Aug 24, 2018 <br />
+ Site last generated: Oct 3, 2018 <br />
 <p><img src="images/company_logo_dark.png" alt="Company logo"/></p>
                 </div>
             </div>
